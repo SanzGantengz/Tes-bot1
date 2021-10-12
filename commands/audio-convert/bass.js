@@ -16,11 +16,10 @@ try {
         if (/audio/.test(mime)) {
             let media = await conn.downloadAndSaveMediaMessage(q)
             let ran = getRandom('.mp3')
-            exec(`ffmpeg -i ${media} -af equalizer=f=25:width_type=o:width=1:g=10 ${ran}`, (err, stderr, stdout) => {
+            exec(`ffmpeg -i ${media} -af equalizer=f=${m.text.slice(5)}:width_type=o:width=1:g=10 ${ran}`, (err, stderr, stdout) => {
                 fs.unlinkSync(media)
                 if (err) m.reply(`_*Error!*_`)
-                let buff = fs.readFileSync(ran)
-                conn.sendFile(m.chat, buff, ran, null, m, true, { quoted: m, mimetype: 'audio/mp4' })
+                conn.sendFile(m.chat, fs.readFileSync(ran), ran, null, m, true, { quoted: m, mimetype: 'audio/mp4' })
                 fs.unlinkSync(ran)
             })
         } else m.reply(`Balas vn/audio yang ingin diubah dengan caption *${userbot.prefix}bass*`)
